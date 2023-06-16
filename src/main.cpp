@@ -64,7 +64,7 @@ void loop()
 void requestEvent()
 // -----------------------------------------------------------------------------
 {
-  // 1 + (12) + (3) + (3) + (4) + (4) + 2 = 1 + (28) = 29
+  // (12) + (4) + (3) + (4) + (4) + 2 = 29
   u8_t t8;
   u16_t t16;
   u32_t t32;
@@ -96,14 +96,14 @@ void requestEvent()
   t32.float32 = gps.altitude.meters();
   WireUtils::write32(t32);
 
-  // Date = 3
+  // Date = 4
   if (gps.date.isValid()) {
     valid.uint8 |= FLAGS_DATE_BIT;
   }
   if (gps.date.isUpdated()) {
     updated.uint8 |= FLAGS_DATE_BIT;
   }
-  t8.uint8 = gps.date.year();
+  t16.uint16 = gps.date.year();
   WireUtils::write16(t16);
   t8.uint8 = gps.date.month();
   WireUtils::write8(t8);
@@ -152,20 +152,20 @@ void requestEvent()
 void displayInfo() {
   Serial.print(F("Location: "));
   if (gps.location.isValid()) {
-    Serial.print(gps.location.lat(), 6);
+    Serial.print(gps.location.peekLat(), 6);
     Serial.print(F(","));
-    Serial.print(gps.location.lng(), 6);
+    Serial.print(gps.location.peekLng(), 6);
   } else {
     Serial.print(F("INVALID"));
   }
 
   Serial.print(F("  Date/Time: "));
   if (gps.date.isValid()) {
-    Serial.print(gps.date.month());
-    Serial.print(F("/"));
-    Serial.print(gps.date.day());
-    Serial.print(F("/"));
-    Serial.print(gps.date.year());
+    Serial.print(gps.date.peekDay());
+    Serial.print(F("."));
+    Serial.print(gps.date.peekYear());
+    Serial.print(F("."));
+    Serial.print(gps.date.peekMonth());
   } else {
     Serial.print(F("INVALID"));
   }
@@ -173,15 +173,15 @@ void displayInfo() {
   Serial.print(F(" "));
   if (gps.time.isValid()) {
     if (gps.time.hour() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.hour());
+    Serial.print(gps.time.peekHour());
     Serial.print(F(":"));
     if (gps.time.minute() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.minute());
+    Serial.print(gps.time.peekMinute());
     Serial.print(F(":"));
     if (gps.time.second() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.second());
+    Serial.print(gps.time.peekSecond());
     Serial.print(F("."));
-    if (gps.time.centisecond() < 10) Serial.print(F("0"));
+    if (gps.time.peekCentisecond() < 10) Serial.print(F("0"));
     Serial.print(gps.time.centisecond());
   } else {
     Serial.print(F("INVALID"));
@@ -189,14 +189,14 @@ void displayInfo() {
 
   Serial.print(F(" SAT:"));
   if (gps.satellites.isValid()) {
-    Serial.print(gps.satellites.value());
+    Serial.print(gps.satellites.peekValue());
   } else {
     Serial.print(F("INVALID"));
   }
 
   Serial.print(F(" HDOP:"));
   if (gps.hdop.isValid()) {
-    Serial.print(gps.hdop.value());
+    Serial.print(gps.hdop.peekValue());
   } else {
     Serial.print(F("INVALID"));
   }
