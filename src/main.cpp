@@ -55,6 +55,7 @@ void loop()
 // -----------------------------------------------------------------------------
 {
   while (ss.available() > 0) {
+    // Serial.print((char)ss.read());
     gps.encode(ss.read());
   }
   gpsTimer.loop();
@@ -163,26 +164,26 @@ void displayInfo() {
   if (gps.date.isValid()) {
     Serial.print(gps.date.peekDay());
     Serial.print(F("."));
-    Serial.print(gps.date.peekYear());
-    Serial.print(F("."));
     Serial.print(gps.date.peekMonth());
+    Serial.print(F("."));
+    Serial.print(gps.date.peekYear());
   } else {
     Serial.print(F("INVALID"));
   }
 
   Serial.print(F(" "));
   if (gps.time.isValid()) {
-    if (gps.time.hour() < 10) Serial.print(F("0"));
+    if (gps.time.peekHour() < 10) Serial.print(F("0"));
     Serial.print(gps.time.peekHour());
     Serial.print(F(":"));
-    if (gps.time.minute() < 10) Serial.print(F("0"));
+    if (gps.time.peekMinute() < 10) Serial.print(F("0"));
     Serial.print(gps.time.peekMinute());
     Serial.print(F(":"));
-    if (gps.time.second() < 10) Serial.print(F("0"));
+    if (gps.time.peekSecond() < 10) Serial.print(F("0"));
     Serial.print(gps.time.peekSecond());
     Serial.print(F("."));
     if (gps.time.peekCentisecond() < 10) Serial.print(F("0"));
-    Serial.print(gps.time.centisecond());
+    Serial.print(gps.time.peekCentisecond());
   } else {
     Serial.print(F("INVALID"));
   }

@@ -14,9 +14,9 @@
 #endif
 
 #ifndef GPS_RX_PIN
-#define GPS_RX_PIN 3
+#define GPS_RX_PIN 2
 #endif
 
 #ifndef GPS_TX_PIN
-#define GPS_TX_PIN 2
+#define GPS_TX_PIN 3
 #endif
